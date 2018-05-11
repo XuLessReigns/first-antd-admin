@@ -22,9 +22,9 @@ Step 1. 安装 dva-cli 并创建应用
 
 然后创建应用：
 
-    $ dva new user-dashboard
+    $ dva new first-demo
 
-    $ cd user-dashboard 
+    $ cd first-demo 
 
 -----------------------------------------------------------------------------------------
 
