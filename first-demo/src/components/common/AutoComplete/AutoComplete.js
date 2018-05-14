@@ -9,14 +9,76 @@ function onSelect(value) {
 }
 
 const Option = AutoComplete.Option;
+const OptGroup = AutoComplete.OptGroup;
 
 const { TextArea } = Input;
 
-function onSelect(value) {
-  console.log('onSelect', value);
+const dataSource1 = ['Burns Bay Road', 'Downing Street', 'Wall Street'];
+
+const dataSource2 = [{
+  title: '话题',
+  children: [{
+    title: 'AntDesign',
+    count: 10000,
+  }, {
+    title: 'AntDesign UI',
+    count: 10600,
+  }],
+}, {
+  title: '问题',
+  children: [{
+    title: 'AntDesign UI 有多好',
+    count: 60100,
+  }, {
+    title: 'AntDesign 是啥',
+    count: 30010,
+  }],
+}, {
+  title: '文章',
+  children: [{
+    title: 'AntDesign 是一个设计语言',
+    count: 100000,
+  }],
+}];
+
+function renderTitle(title) {
+  return (
+    <span>
+      {title}
+      <a
+        style={{ float: 'right' }}
+        href="https://www.google.com/search?q=antd"
+        target="_blank"
+        rel="noopener noreferrer"
+      >更多
+      </a>
+    </span>
+  );
 }
 
-const dataSource1 = ['Burns Bay Road', 'Downing Street', 'Wall Street'];
+const options = dataSource2.map(group => (
+  <OptGroup
+    key={group.title}
+    label={renderTitle(group.title)}
+  >
+    {group.children.map(opt => (
+      <Option key={opt.title} value={opt.title}>
+        {opt.title}
+        <span className="certain-search-item-count">{opt.count} 人 关注</span>
+      </Option>
+    ))}
+  </OptGroup>
+)).concat([
+  <Option disabled key="all" className="show-all">
+    <a
+      href="https://www.google.com/search?q=antd"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      查看所有结果
+    </a>
+  </Option>,
+]);
 
 function getRandomInt(max, min = 0) {
   return Math.floor(Math.random() * (max - min + 1)) + min; // eslint-disable-line no-mixed-operators
@@ -52,6 +114,7 @@ class Index extends React.Component{
 
   state = {
     dataSource: [],
+    dataSource4: [],
     result: [],
   }
 
@@ -77,7 +140,7 @@ class Index extends React.Component{
 
   handleSearch2 = (value) => {
     this.setState({
-      dataSource: value ? searchResult(value) : [],
+      dataSource4: value ? searchResult(value) : [],
     });
   }
 
@@ -87,12 +150,15 @@ class Index extends React.Component{
 
   
   render (){
-    const { dataSource } = this.state;
+    const { dataSource,dataSource4 } = this.state;
+    console.log(dataSource,dataSource4)
 
     const { result } = this.state;
     const children = result.map((email) => {
       return <Option key={email}>{email}</Option>;
     });
+    
+    const dataSource3 = ['12345', '23456', '34567'];
 
     return (
       <div>
@@ -144,16 +210,34 @@ class Index extends React.Component{
       />
 
       <br />
-      5. 查询模式: 不确定类目 示例。
-      {/* 暂时有点问题 */}
-      {/* <div className="global-search-wrapper" style={{ width: 300 }}>
+      5.查询模式: 确定类目 示例。
+      <div className="certain-category-search-wrapper" style={{ width: 250 }}>
+        <AutoComplete
+          className="certain-category-search"
+          dropdownClassName="certain-category-search-dropdown"
+          dropdownMatchSelectWidth={false}
+          dropdownStyle={{ width: 300 }}
+          size="large"
+          style={{ width: '100%' }}
+          dataSource={options}
+          placeholder="input here"
+          optionLabelProp="value"
+        >
+          <Input suffix={<Icon type="search" className="certain-category-icon" />} />
+        </AutoComplete>
+      </div>
+      <AutoComplete dataSource={dataSource3} />
+
+      <br />
+      6. 查询模式: 不确定类目 示例。
+      <div className="global-search-wrapper" style={{ width: 300 }}>
         <AutoComplete
           className="global-search"
           size="large"
           style={{ width: '100%' }}
-          dataSource={dataSource.map(renderOption)}
+          dataSource={dataSource4.map(renderOption)}
           onSelect={onSelect}
-          onSearch={this.handleSearch}
+          onSearch={this.handleSearch2}
           placeholder="input here"
           optionLabelProp="text"
         >
@@ -165,7 +249,7 @@ class Index extends React.Component{
             )}
           />
         </AutoComplete>
-      </div> */}
+      </div>
 
       </div>
     )

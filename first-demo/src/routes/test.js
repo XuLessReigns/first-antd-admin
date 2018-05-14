@@ -6,7 +6,8 @@ import { connect } from 'dva';
 // import TestDemo from '../components/common/Menu/Menu';//导航菜单
 // import TestDemo from '../components/common/Pagination/Pagination';//分页
 // import TestDemo from '../components/common/Steps/Steps'; //步骤条
-import TestDemo from '../components/common/AutoComplete/AutoComplete';//自动完成
+// import TestDemo from '../components/common/AutoComplete/AutoComplete';//自动完成
+import TestDemo from '../components/common/Cascader/Cascader';//级联选择
 
 function Test (){
   return (
